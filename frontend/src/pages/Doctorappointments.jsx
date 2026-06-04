@@ -6,6 +6,9 @@ import { LuLogOut } from "react-icons/lu";
 import { MdFilterList } from 'react-icons/md';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const Doctorappointments = ({doctorId}) => {
     const [appointments, setappointments] = useState([]);
     const[filteredappointments,setfilteredappointments]=useState([])
@@ -28,7 +31,7 @@ const Doctorappointments = ({doctorId}) => {
                 setloading(false);
                 return;
             }
-                const response = await axios.get(`http://localhost:5000/api/booking/doctor/${activeDoctorId}`);
+                const response = await axios.get(`${apiurl}/api/booking/doctor/${activeDoctorId}`);
 
                console.log("DEBUG: API Response data:", response.data);
                 
@@ -73,10 +76,10 @@ const Doctorappointments = ({doctorId}) => {
 
     try {
         setuploading(id);  
-        const res = await axios.post(`http://localhost:5000/api/booking/${id}/upload`, formData);
+        const res = await axios.post(`${apiurl}/api/booking/${id}/upload`, formData);
         const newUrl = res.data.path;
         
-        await axios.patch(`http://localhost:5000/api/booking/${id}/status`, { status: 'Completed' });
+        await axios.patch(`${apiurl}/api/booking/${id}/status`, { status: 'Completed' });
 
         setappointments(prev => prev.map(app => 
             app._id === id ? { ...app, medicalrecord: newUrl, status: 'Completed' } : app
@@ -102,7 +105,7 @@ const downloadPrescription = async (fullUrl) => {
         const pathPart = parts[1].split('/').slice(1).join('/'); // removes 'v12345/'
         const publicId = pathPart.split('.')[0]; // removes '.pdf'
 
-        const res = await axios.get(`http://localhost:5000/api/booking/get-signed-url/${encodeURIComponent(publicId)}`);
+        const res = await axios.get(`${apiurl}/api/booking/get-signed-url/${encodeURIComponent(publicId)}`);
         
         const link = document.createElement('a');
         link.href = res.data.signedUrl;

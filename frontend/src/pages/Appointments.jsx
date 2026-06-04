@@ -7,6 +7,9 @@ import { MdCheckCircleOutline } from "react-icons/md";
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios'
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 
 const Appointments = () => {
     const[open,setopen]=useState(false);
@@ -20,7 +23,7 @@ const Appointments = () => {
 
     try {
         setloading(true);
-        const response = await axios.post('http://localhost:5000/api/booking/getuserbookings', { 
+        const response = await axios.post(`${apiurl}/api/booking/getuserbookings`, { 
             email: email 
         });
         setappointments(response.data.bookings || []);
@@ -37,7 +40,7 @@ const Appointments = () => {
     const handlecancel=async(id)=>{
         if(window.confirm("Are you sure you want to cancel this appointment?")) {
             try{
-                const response= await axios.patch(`http://localhost:5000/api/booking/${id}/cancel`)
+                const response= await axios.patch(`${apiurl}/api/booking/${id}/cancel`)
                 if(response.data.success){
                     alert("Appointment cancelled successfully")
                     fetchappointments();

@@ -5,6 +5,8 @@ import { MdClose, MdSearch } from "react-icons/md";
 import { MdMenu } from "react-icons/md";
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
 
 const Medicalrecords = () => {
     const[records,setrecords]=useState([]);
@@ -31,7 +33,7 @@ useEffect(() => {
             console.error("Email not found in userInfo!");
             return;
         }
-        const res = await axios.get(`http://localhost:5000/api/booking/medicalrecords`, {
+        const res = await axios.get(`${apiurl}/api/booking/medicalrecords`, {
             params: { email: userEmail },
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });        

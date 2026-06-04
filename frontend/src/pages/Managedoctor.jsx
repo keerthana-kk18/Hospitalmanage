@@ -3,6 +3,9 @@ import { MdAdd, MdFilterList, MdOutlineRemoveRedEye, MdSearch, MdOutlineEdit, Md
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 
 const Managedoctor = ({onViewDoctor,onEditDoctor, refreshKey}) => {
     const[availability,setavailability]=useState('all')
@@ -14,7 +17,7 @@ const Managedoctor = ({onViewDoctor,onEditDoctor, refreshKey}) => {
         const fetchdoctors=async()=>{
             try{
                 const token=localStorage.getItem('token') 
-                const response=await axios.get('http://localhost:5000/api/admin/doctors',
+                const response=await axios.get(`${apiurl}/api/admin/doctors`,
                     {headers:{'Authorization': `Bearer ${token}`}
             })
             const rawdata=Array.isArray(response.data)? response.data : (response.data.doctors || response.data.data || [])

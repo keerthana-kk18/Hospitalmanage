@@ -8,6 +8,9 @@ import {MdOutlineCalendarMonth, MdOutlineWatchLater, MdPhoneEnabled} from "react
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 
 const Booking = () => {
     const[open,setopen]=useState(false);
@@ -35,10 +38,10 @@ const Booking = () => {
     const fetchbookingdata = async () => {
         try {
             setloading(true);
-            const doctorres = await axios.get(`http://localhost:5000/api/doctor/${doctorId}`);
+            const doctorres = await axios.get(`${apiurl}/api/doctor/${doctorId}`);
             setdoctorinfo(doctorres.data);
 
-            const scheduleres = await axios.get(`http://localhost:5000/api/schedule/doctor/${doctorId}`);
+            const scheduleres = await axios.get(`${apiurl}/api/schedule/doctor/${doctorId}`);
             const schedules = scheduleres.data.schedules;
             setrawschedules(schedules);
 
@@ -71,7 +74,7 @@ const Booking = () => {
         if (!selecteddate || !doctorId) return;
 
         try {
-            const response = await axios.get(`http://localhost:5000/api/booking/availableslots`, {
+            const response = await axios.get(`${apiurl}/api/booking/availableslots`, {
                 params: { doctorId, dateString: selecteddate }
             });
 
@@ -108,7 +111,7 @@ const Booking = () => {
         }}
 
         try{
-            const response=await axios.post('http://localhost:5000/api/booking/create',payload)
+            const response=await axios.post(`${apiurl}/api/booking/create`,payload)
             if(response.data.success){
                 alert("Appointment booked successfully")
                 navigate('/appointments')

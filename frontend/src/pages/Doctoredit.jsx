@@ -2,6 +2,9 @@ import React, {useState} from 'react'
 import { MdAdd, MdCloudUpload } from 'react-icons/md'
 import axios from 'axios'
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const Doctoredit = ({doctor,onCancel,onUpdate}) => {
     const[formdata,setformdata]=useState({
         fullname: doctor?.fullname || '',
@@ -26,7 +29,7 @@ const Doctoredit = ({doctor,onCancel,onUpdate}) => {
     try {
         const token = localStorage.getItem('token');
         const response = await axios.put(
-            `http://localhost:5000/api/doctor/update/${doctor._id}`, 
+            `${apiurl}/api/doctor/update/${doctor._id}`, 
             formdata,
             {
                 headers: { 

@@ -2,6 +2,9 @@ import React,{useState, useEffect} from 'react'
 import doctor1 from '../images/doct111.png';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const InfoField = ({ label, value }) => (
     <div className='flex flex-col gap-2'>
         <span className='text-[#26a69a] font-bold text-lg'>{label}</span>
@@ -24,7 +27,7 @@ const Doctorview = ({doctor}) => {
     try {
         const targetDoctorId = doctor._id; 
         
-        const response = await axios.get(`http://localhost:5000/api/doctor/stats/${targetDoctorId}`, {
+        const response = await axios.get(`${apiurl}/api/doctor/stats/${targetDoctorId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setStats(response.data);

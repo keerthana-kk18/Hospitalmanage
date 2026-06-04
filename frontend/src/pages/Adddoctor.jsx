@@ -2,6 +2,9 @@ import React, {useState} from 'react'
 import { MdAdd, MdCloudUpload } from 'react-icons/md'
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const Adddoctor = () => {
     const[formdata,setformdata]=useState({
         fullname:'',
@@ -43,7 +46,7 @@ const Adddoctor = () => {
                 data.append('image',image)
 
                 const token=localStorage.getItem('token')
-                const response=await axios.post('http://localhost:5000/api/admin/adddoctor',data,{
+                const response=await axios.post(`${apiurl}/api/admin/adddoctor`,data,{
                     headers:{'Content-Type':'multipart/form-data', 'Authorization': `Bearer ${token}`} 
                 })
                 alert(response.data.message || "Doctor added successfully")

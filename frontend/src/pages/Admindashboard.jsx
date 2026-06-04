@@ -12,6 +12,8 @@ import AllPatients from './Allpatients';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
 
 
 const Admindashboard = () => {
@@ -25,7 +27,7 @@ const Admindashboard = () => {
         const fetchStats = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/booking/dashstats', {
+                const response = await axios.get(`${apiurl}/api/booking/dashstats`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 setStats(response.data);

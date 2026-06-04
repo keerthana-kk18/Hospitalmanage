@@ -3,6 +3,9 @@ import { MdOutlineCalendarMonth, MdOutlineAccessTime, MdDeleteOutline, MdClose, 
 import { FaRegSave } from 'react-icons/fa';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const Schedandavailability = () => {
     const[available,setavailable]=useState(true);
     const[schedules,setschedules]=useState([])
@@ -15,7 +18,7 @@ const Schedandavailability = () => {
     const fetchschedules = async () => {
     try {
         if (!doctorid) return;
-        const response = await axios.get(`http://localhost:5000/api/schedule/doctor/${doctorid}`);
+        const response = await axios.get(`${apiurl}/api/schedule/doctor/${doctorid}`);
         const rawArray = response.data.schedules || response.data.schedule || response.data || [];
         const dataArray = Array.isArray(rawArray) ? rawArray : [rawArray];
         
@@ -68,7 +71,7 @@ const Schedandavailability = () => {
         }
         const displaydate=formatdisplaydate(newdate)
         try{
-            const response=await axios.post('http://localhost:5000/api/schedule/adddate',{doctorid, dateString:newdate, displaydate})
+            const response=await axios.post(`${apiurl}/api/schedule/adddate`,{doctorid, dateString:newdate, displaydate})
             const targetdata = response.data.schedule || response.data.schedules || response.data;
             const savedschedule={...targetdata, displayDate:targetdata.displayDate || targetdata.displaydate, slots:targetdata.slots || []}
             setschedules([...schedules, savedschedule])
@@ -80,7 +83,7 @@ const Schedandavailability = () => {
 
     const handledeletedate=async(dateString)=>{
         try{
-            await axios.delete('http://localhost:5000/api/schedule/deletedate',{data:{doctorid, dateString}})
+            await axios.delete(`${apiurl}/api/schedule/deletedate`,{data:{doctorid, dateString}})
             setschedules(schedules.filter(sched=>sched.dateString!==dateString))
         }catch(error){
             alert(error.response?.data?.message || 'Failed to delete date. Please try again.')
@@ -99,7 +102,7 @@ const Schedandavailability = () => {
         hours=hours%12 || 12
         const timeslot=`${hours}:${minutesstr} ${ampm}`
         try{
-            const response=await axios.post('http://localhost:5000/api/schedule/addslot',{doctorid, dateString, timeslot})
+            const response=await axios.post(`${apiurl}/api/schedule/addslot`,{doctorid, dateString, timeslot})
             const backendDoc=response.data.schedule || response.data
             const updatedschedule = {...backendDoc, displayDate: backendDoc.displayDate || backendDoc.displaydate, slots: backendDoc.slots || []};            
             setschedules(schedules.map(sched=>sched.dateString===dateString? updatedschedule : sched))
@@ -111,7 +114,7 @@ const Schedandavailability = () => {
 
     const handledeleteslot=async(dateString,timeslot)=>{
         try{
-            const response=await axios.delete('http://localhost:5000/api/schedule/deleteslot',{data:{doctorid, dateString, timeslot}})
+            const response=await axios.delete(`${apiurl}/api/schedule/deleteslot`,{data:{doctorid, dateString, timeslot}})
             const backendDoc=response.data.schedule
             const updatedschedule = {...backendDoc,dateString: backendDoc.dateString || dateString,displayDate: backendDoc.displayDate || backendDoc.displaydate,slots: backendDoc.slots || []};      
             setschedules(schedules.map(sched=>sched.dateString===dateString? updatedschedule : sched))
@@ -123,7 +126,7 @@ const Schedandavailability = () => {
     try {
         const token = localStorage.getItem('token');
         const statusToSave = available ? 'Available' : 'Not Available';
-        await axios.put('http://localhost:5000/api/doctor/updateavailability', 
+        await axios.put(`${apiurl}/api/doctor/updateavailability`, 
             { isAvailable: available }, // Send the boolean
             { headers: { Authorization: `Bearer ${token}` } }
         );

@@ -3,6 +3,9 @@ import { MdAdd, MdFilterList, MdOutlineRemoveRedEye, MdSearch, MdOutlineEdit, Md
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 
 const Allpatients = ({onViewDoctor,onEditDoctor}) => {
     const[status,setstatus]=useState('all')
@@ -14,7 +17,7 @@ const Allpatients = ({onViewDoctor,onEditDoctor}) => {
         const fetchPatients = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/booking/all', {
+                const response = await axios.get(`${apiurl}/api/booking/all`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 setPatients(response.data.bookings || []);

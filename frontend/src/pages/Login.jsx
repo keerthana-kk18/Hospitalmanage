@@ -5,6 +5,9 @@ import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import doctor from '../images/doctor3.jpg';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const Login = () => {
     const[email,setemail]=useState('');
     const[password,setpassword]=useState('');
@@ -14,7 +17,7 @@ const Login = () => {
     const handlelogin=async(e)=>{
         e.preventDefault();
         try{
-            const res=await axios.post('http://localhost:5000/api/user/login',{email,password})
+            const res=await axios.post(`${apiurl}/api/user/login`,{email,password})
             if(res.status===200){
                 localStorage.setItem('token',res.data.token)
                 localStorage.setItem('userInfo',JSON.stringify(res.data.user))

@@ -7,6 +7,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
 
 
 const Userhome = () => {
@@ -19,7 +20,7 @@ const Userhome = () => {
      useEffect(()=>{
         const fetchdoctors=async()=>{
             try{
-                const response=await axios.get('http://localhost:5000/api/admin/doctors')
+                const response=await axios.get(`${apiurl}/api/admin/doctors`)
                 const rawdata=Array.isArray(response.data)? response.data : (response.data.doctors || response.data.data || [])
                 setdoctors(rawdata) 
             }catch(error){

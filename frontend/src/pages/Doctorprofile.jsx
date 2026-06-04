@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const Doctorprofile = () => {
     const [doctorData, setDoctorData] = useState(null);
     const[loading,setloading]=useState(true)
@@ -9,7 +12,7 @@ const Doctorprofile = () => {
         const fetchDoctorData = async () => {
             try {
                 const token = localStorage.getItem('token'); 
-                const response = await axios.get('http://localhost:5000/api/doctor/profile', {
+                const response = await axios.get(`${apiurl}/api/doctor/profile`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

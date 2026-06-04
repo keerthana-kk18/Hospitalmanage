@@ -8,6 +8,9 @@ import Doctorprofile from './Doctorprofile';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 const Doctordashboard = () => {
     const[activetab,setactivetab]=useState('dashboard')
     const[mobileopen,setmobileopen]=useState(false);
@@ -27,7 +30,7 @@ const Doctordashboard = () => {
                 const doctorId = activeUser.id || activeUser._id;
                 
                 if (doctorId) {
-                    const res = await axios.get(`http://localhost:5000/api/booking/doctor/${doctorId}`);
+                    const res = await axios.get(`${apiurl}/api/booking/doctor/${doctorId}`);
                     const bookings = res.data.bookings || res.data || [];
                     
                     const total = bookings.length;

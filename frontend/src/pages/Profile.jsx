@@ -6,6 +6,9 @@ import { MdClose, MdMenu, MdOutlineCheck, MdOutlineCancel, MdOutlineLock, MdOutl
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+const apiurl=import.meta.env.VITE_BACKEND_URL;
+
+
 
 const Profile = () => {
     const[open,setopen]=useState(false);
@@ -35,7 +38,7 @@ const Profile = () => {
         if(password){
             updatedata.password=password
         }
-        const response=await axios.put('http://localhost:5000/api/user/profile',updatedata,{headers:{Authorization:`Bearer ${token}`}}
+        const response=await axios.put(`${apiurl}/api/user/profile`,updatedata,{headers:{Authorization:`Bearer ${token}`}}
         )
         if(response.status===200){
             const updateuser={...storeduser, name:name, email:email}
